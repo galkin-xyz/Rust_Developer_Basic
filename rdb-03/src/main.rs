@@ -2,6 +2,7 @@ fn main() {
     println!("Домашнее задание по теме: \"Типы данных. Переменные и функции\"");
     println!("double_int32(3600) = {}", double_int32(3600));
     println!("double_int64(-8530) = {}", double_int64(-8_530i32));
+    assert_eq!(double_int64(2_000_000_000), 4_000_000_000);
     println!("double_float32(3.1415) = {}", double_float32(3.1415));
     println!("double_float64(25.0) = {}", double_float64(25f32));
     println!(
@@ -21,7 +22,7 @@ fn double_int32(int32: i32) -> i32 {
 }
 
 fn double_int64(int32: i32) -> i64 {
-    (int32 * 2).into()
+    int32 as i64 * 2
 }
 
 fn double_float32(float32: f32) -> f32 {
@@ -29,7 +30,7 @@ fn double_float32(float32: f32) -> f32 {
 }
 
 fn double_float64(float32: f32) -> f64 {
-    (float32 * 2.0).into()
+    float32 as f64 * 2.0
 }
 
 fn int_plus_float_to_float(int32: i32, float32: f32) -> f64 {
