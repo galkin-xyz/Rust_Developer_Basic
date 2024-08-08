@@ -27,7 +27,7 @@ fn fizzbuzz(num: u32) -> String {
 }
 
 fn fizzbuzz_list(n: u32) -> Vec<String> {
-    let mut res: Vec<String> = vec![];
+    let mut res: Vec<String> = Vec::new();
 
     for i in 1..=n {
         res.push(fizzbuzz(i));
