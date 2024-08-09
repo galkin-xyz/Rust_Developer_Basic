@@ -39,8 +39,8 @@ fn uniq_digit_any(s: &str) -> Option<u8> {
             }
         }
     }
-    for digit in 0..=9 {
-        if state[digit] == 1 {
+    for (digit, item) in state.iter().enumerate() {
+        if *item == 1 {
             return Some(digit as u8);
         }
     }

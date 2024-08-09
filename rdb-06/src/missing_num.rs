@@ -12,14 +12,10 @@
 
 fn missing_num(nums: &[i32]) -> i32 {
     let size: usize = nums.len();
-    let mut state: Vec<bool> = Vec::new();
+    let mut state: Vec<bool> = vec![true; size + 1];
 
-    for _ in 0..=size {
-        state.push(true);
-    }
-
-    for i in 0..size {
-        state[nums[i] as usize] = false;
+    for item in nums {
+        state[*item as usize] = false;
     }
 
     let mut i: usize = 0;
