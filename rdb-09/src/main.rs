@@ -47,8 +47,8 @@ fn accrue_interest(bank: &mut Bank) {
 }
 
 struct BankBalance {
-    liabilities: i64,
-    assets: i64,
+    liabilities: u64,
+    assets: u64,
 }
 
 fn bank_balance(bank: &Bank) -> BankBalance {
@@ -58,8 +58,8 @@ fn bank_balance(bank: &Bank) -> BankBalance {
     };
     for acc in &bank.accounts {
         match acc.balance {
-            1.. => bank_balance.liabilities += acc.balance,
-            ..=-1 => bank_balance.assets += acc.balance,
+            1.. => bank_balance.liabilities += acc.balance as u64,
+            ..=-1 => bank_balance.assets += -acc.balance as u64,
             0 => (),
         }
     }
@@ -171,7 +171,7 @@ mod tests {
     }
 
     #[test]
-    fn accrue_interests_works() {
+    fn accrue_interests_works1() {
         let mut bank = Bank {
             accounts: Vec::new(),
             credit_rate: 2000,
@@ -203,6 +203,38 @@ mod tests {
     }
 
     #[test]
+    fn accrue_interests_works2() {
+        let mut bank = Bank {
+            accounts: Vec::new(),
+            credit_rate: 80,
+            debit_rate: 50,
+        };
+        bank.accounts.push(Account {
+            name: "deb1".to_string(),
+            balance: 1000,
+        });
+        bank.accounts.push(Account {
+            name: "deb2".to_string(),
+            balance: 2000,
+        });
+        bank.accounts.push(Account {
+            name: "cred1".to_string(),
+            balance: -1000,
+        });
+        bank.accounts.push(Account {
+            name: "cred2".to_string(),
+            balance: -2000,
+        });
+
+        accrue_interest(&mut bank);
+
+        assert_eq!(bank.accounts[0].balance, 1005);
+        assert_eq!(bank.accounts[1].balance, 2010);
+        assert_eq!(bank.accounts[2].balance, -1008);
+        assert_eq!(bank.accounts[3].balance, -2016);
+    }
+
+    #[test]
     fn bank_balance_works() {
         let mut bank = Bank {
             accounts: Vec::new(),
@@ -229,7 +261,7 @@ mod tests {
         let balance: BankBalance = bank_balance(&bank);
 
         assert_eq!(balance.liabilities, 1200);
-        assert_eq!(balance.assets, -2100);
+        assert_eq!(balance.assets, 2100);
     }
 
     #[test]
